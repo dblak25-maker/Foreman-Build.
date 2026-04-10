@@ -1,3 +1,4 @@
+
 name: Build APK
 on: [push]
 jobs:
@@ -5,8 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Install Buildozer
+        run: pip install buildozer
       - name: Build with Buildozer
-        uses: ArtemSerebriakov/buildozer-action@v1
-        with:
-          workdir: .
-          buildozer_version: master
+        run: buildozer -v android debug
