@@ -10,19 +10,20 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.9'
+          cache: 'pip' # This saves data and time
 
       - name: Install Industrial Tools
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential git ffmpeg libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev libportmidi-dev libswscale-dev libavformat-dev libavcodec-dev zlib1g-dev
-          sudo apt-get install -y autoconf automake libtool pkg-config cmake gettext libffi-dev libssl-dev
-          pip install --user --upgrade Cython==0.29.33 buildozer python-for-android
+          sudo apt-get install -y build-essential git ffmpeg libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev libportmidi-dev libswscale-dev libavformat-dev libavcodec-dev zlib1g-dev autoconf automake libtool pkg-config cmake gettext libffi-dev libssl-dev
+          pip install --user --upgrade Cython==0.29.33 buildozer
 
       - name: Build Base Engine
         run: |
           export PATH=$PATH:$HOME/.local/bin
-          # We are skipping 'clean' to keep the pipe open
-          yes | buildozer -v android debug
+          # The 'debug' command is what's timing out. 
+          # We're adding --color=always to keep the 'pipe' active.
+          yes | buildozer -v android debug --color=always
           
       - name: Save APK
         uses: actions/upload-artifact@v4
