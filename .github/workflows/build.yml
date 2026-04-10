@@ -11,17 +11,17 @@ jobs:
         with:
           python-version: '3.9'
 
-      - name: Install Essential Tools
+      - name: Install Industrial Tools
         run: |
           sudo apt-get update
           sudo apt-get install -y build-essential git ffmpeg libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev libportmidi-dev libswscale-dev libavformat-dev libavcodec-dev zlib1g-dev
           sudo apt-get install -y autoconf automake libtool pkg-config cmake gettext libffi-dev libssl-dev
-          pip install --user --upgrade Cython==0.29.33 buildozer
+          pip install --user --upgrade Cython==0.29.33 buildozer python-for-android
 
       - name: Build Base Engine
         run: |
           export PATH=$PATH:$HOME/.local/bin
-          # No more "clean" command - we want to keep the platform files
+          # We are skipping 'clean' to keep the pipe open
           yes | buildozer -v android debug
           
       - name: Save APK
@@ -29,4 +29,3 @@ jobs:
         with:
           name: Foreman-App-Package
           path: bin/*.apk
-
